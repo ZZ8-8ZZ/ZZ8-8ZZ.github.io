@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/ZZ8-8ZZ/image/202408230929123.ico">
+    <title>精选应用中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .app-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .app-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .app-description {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .app-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ffdd00 0%, #fbb034 100%);
+            color: #000;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 221, 0, 0.3);
+        }
+
+        .app-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 221, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .app-grid {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
+            }
+
+            .app-card {
+                padding: 25px;
+            }
+
+            .app-name {
+                font-size: 20px;
+            }
+
+            .app-description {
+                font-size: 14px;
+            }
+
+            .app-button {
+                padding: 10px 25px;
+                font-size: 14px;
+            }
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link:hover {
+            background: #ffdd00;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .nav-right {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* 添加弹出框样式 */
+        .download-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 5px;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+
+        .version-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .version-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .version-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .version-icon {
+            font-size: 1.5em;
+        }
+
+        .version-info {
+            flex: 1;
+        }
+
+        .version-name {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .version-desc {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-left">
+                <a href="https://ZZ8-8ZZ.github.io/" class="logo">
+                    <img src="./images/logo.png" alt="Logo">
+                    <span class="logo-text">视频解析_精选应用中心</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="parse.html" class="nav-link">返回</a>
+            </div>
+        </nav>
+
+        <div class="app-grid">
+            <div class="app-card">
+                <img src="./images/miwutong.webp" alt="应用图标" class="app-icon">
+                <div class="app-name">迷雾通</div>
+                <div class="app-description">与众不同的翻墙软件</div>
+                <a href="javascript:void(0)" class="app-button" onclick="showDownloadOptions('miwutong')">立即下载</a>
+            </div>
+
+            <!-- <div class="app-card">
+                <img src="https://placeholder.com/60" alt="应用图标" class="app-icon">
+                <div class="app-name">支付宝</div>
+                <div class="app-description">智能生活从支付开始，让支付更简单。</div>
+                <a href="javascript:void(0)" class="app-button" onclick="showDownloadOptions('alipay')">立即下载</a>
+            </div>
+
+            <div class="app-card">
+                <img src="https://placeholder.com/60" alt="应用图标" class="app-icon">
+                <div class="app-name">抖音</div>
+                <div class="app-description">记录美好生活，分享精彩时刻。</div>
+                <a href="javascript:void(0)" class="app-button" onclick="showDownloadOptions('douyin')">立即下载</a>
+            </div>
+
+            <div class="app-card">
+                <img src="https://placeholder.com/60" alt="应用图标" class="app-icon">
+                <div class="app-name">淘宝</div>
+                <div class="app-description">淘到你喜欢的，生活更有趣。</div>
+                <a href="javascript:void(0)" class="app-button" onclick="showDownloadOptions('taobao')">立即下载</a>
+            </div> -->
+        </div>
+
+        <!-- 添加下载选项弹窗 -->
+        <div class="download-modal" id="downloadModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">选择下载版本</div>
+                    <button class="close-modal" onclick="closeDownloadModal()">×</button>
+                </div>
+                <div class="version-list" id="versionList">
+                    <!-- 版本列表将通过 JavaScript 动态添加 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 应用版本配置
+        const appVersions = {
+            miwutong: {
+                name: "迷雾通",
+                versions: [
+                    {
+                        name: "Android 版本",
+                        icon: "📱",
+                        desc: "适用于 Android 5.0 及以上（apk）",
+                        url: "https://f001.backblazeb2.com/file/geph4-dl/geph-releases/android-stable/4.99.26/geph-android.apk"
+                    },
+                    {
+                        name: "Windows 版本",
+                        icon: "🪟",
+                        desc: "适用于 Windows 7/8/10/11（exe）",
+                        url: "https://f001.backblazeb2.com/file/geph4-dl/geph-releases/windows-stable/4.99.26/geph-windows-setup.exe"
+                    },
+                    {
+                        name: "macOS 版本",
+                        icon: "🍎",
+                        desc: "适用于 Intel/M1/M2 芯片（dmg）",
+                        url: "https://f001.backblazeb2.com/file/geph4-dl/geph-releases/macos-stable/4.99.26/geph-macos.dmg"
+                    },
+                    {
+                        name: "Linux 版本",
+                        icon: "🐧",
+                        desc: "适用于 64位 Linux 系统（flatpak）",
+                        url: "https://f001.backblazeb2.com/file/geph4-dl/geph-releases/linux-stable/4.99.26/Geph-x86_64.flatpak"
+                    }
+
+                ]
+            },
+            // alipay: {
+            //     name: "支付宝",
+            //     versions: [
+            //         {
+            //             name: "Android 版本",
+            //             icon: "📱",
+            //             desc: "适用于 Android 5.0 及以上设备",
+            //             url: "https://t.alipayobjects.com/L1/71/100/and/alipay_wap_main.apk"
+            //         },
+            //         {
+            //             name: "iOS 版本",
+            //             icon: "🍎",
+            //             desc: "跳转至 App Store 下载",
+            //             url: "https://apps.apple.com/cn/app/支付宝-让生活更简单/id333206289"
+            //         },
+            //         {
+            //             name: "Windows 版本",
+            //             icon: "🪟",
+            //             desc: "适用于 Windows 桌面端",
+            //             url: "https://render.alipay.com/p/s/download?form=windows"
+            //         }
+            //     ]
+            // },
+            // douyin: {
+            //     name: "抖音",
+            //     versions: [
+            //         {
+            //             name: "Android 版本",
+            //             icon: "📱",
+            //             desc: "适用于 Android 设备",
+            //             url: "https://www.douyin.com/download/android"
+            //         },
+            //         {
+            //             name: "iOS 版本",
+            //             icon: "🍎",
+            //             desc: "跳转至 App Store 下载",
+            //             url: "https://apps.apple.com/cn/app/抖音/id1142110895"
+            //         },
+            //         {
+            //             name: "网页版",
+            //             icon: "🌐",
+            //             desc: "无需下载，浏览器直接访问",
+            //             url: "https://www.douyin.com"
+            //         }
+            //     ]
+            // },
+            // taobao: {
+            //     name: "淘宝",
+            //     versions: [
+            //         {
+            //             name: "Android 版本",
+            //             icon: "📱",
+            //             desc: "适用于 Android 设备",
+            //             url: "https://market.m.taobao.com/app/fdilab/download-page/main/index.html"
+            //         },
+            //         {
+            //             name: "iOS 版本",
+            //             icon: "🍎",
+            //             desc: "跳转至 App Store 下载",
+            //             url: "https://apps.apple.com/cn/app/淘宝-太好逛了/id387682726"
+            //         },
+            //         {
+            //             name: "Windows 版本",
+            //             icon: "🪟",
+            //             desc: "适用于 Windows 电脑",
+            //             url: "https://www.taobao.com/markets/pc/download"
+            //         },
+            //         {
+            //             name: "macOS 版本",
+            //             icon: "🍎",
+            //             desc: "适用于 macOS 电脑",
+            //             url: "https://www.taobao.com/markets/pc/download"
+            //         }
+            //     ]
+            // }
+        };
+
+        function showDownloadOptions(appId) {
+            const modal = document.getElementById('downloadModal');
+            const versionList = document.getElementById('versionList');
+            const app = appVersions[appId];
+
+            if (!app) return;
+
+            versionList.innerHTML = app.versions.map(version => `
+                <a href="${version.url}" class="version-button" target="_blank">
+                    <span class="version-icon">${version.icon}</span>
+                    <div class="version-info">
+                        <div class="version-name">${version.name}</div>
+                        <div class="version-desc">${version.desc}</div>
+                    </div>
+                </a>
+            `).join('');
+
+            modal.style.display = 'flex';
+        }
+
+        function closeDownloadModal() {
+            document.getElementById('downloadModal').style.display = 'none';
+        }
+
+        // 点击模态框外部关闭
+        document.getElementById('downloadModal').addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeDownloadModal();
+            }
+        });
+    </script>
+</body>
+
+</html>
