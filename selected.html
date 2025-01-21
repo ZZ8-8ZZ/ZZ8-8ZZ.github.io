@@ -377,6 +377,11 @@
         </div>
     </div>
 
+    <!-- 微信浏览器提示 -->
+    <div id="weixin-tip">
+        <img src="images/202408151358934.jpg" alt="在浏览器中打开">
+    </div>
+
     <script>
         // 应用版本配置
         const appVersions = {
@@ -509,6 +514,27 @@
 
         function closeDownloadModal() {
             document.getElementById('downloadModal').style.display = 'none';
+        }
+
+        // 检测微信内置浏览器
+        function isWeixinBrowser() {
+            var ua = window.navigator.userAgent.toLowerCase();
+            return ua.includes('micromessenger');
+        }
+
+        // 页面加载完成后检测
+        window.onload = function() {
+            if (isWeixinBrowser()) {
+                document.getElementById('weixin-tip').style.display = 'block';
+                // 阻止页面滚动
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        // 点击提示图片时关闭提示
+        document.getElementById('weixin-tip').onclick = function() {
+            this.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         // 点击模态框外部关闭
