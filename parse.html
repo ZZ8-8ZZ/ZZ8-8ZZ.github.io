@@ -1,13 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh_CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/ZZ8-8ZZ/image/202408230929123.ico">
-    <meta name="description" content="ZACH免费在线视频解析工具,支持爱奇艺、腾讯视频、优酷、芒果TV等多平台VIP视频免费在线观看">
-    <meta name="keywords" content="ZACH视频解析,VIP视频解析,ZACH视频在线解析,视频VIP解析,ZACH解析,ZACH">
-    <title>ZACH_视频解析</title>
+    <title>视频播放</title>
     <style>
         * {
             margin: 0;
@@ -19,180 +16,84 @@
         body {
             background: linear-gradient(135deg, #0077b6, #00b4d8);
             color: #fff;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
         }
 
-        .search-box {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .search-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .search-tab {
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .search-tab.active {
-            background: #ffdd00;
-            color: #000;
-        }
-
-        .search-form {
-            display: none;
-            gap: 15px;
-        }
-
-        .search-form.active {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        select,
-        input,
-        button {
-            padding: 12px 20px;
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            transition: all 0.3s;
         }
-
-        input {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        button {
-            background: #ffdd00;
-            color: #000;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-        }
-
-        .platform-list {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 20px;
-        }
-
-        .platform-item {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 25px 20px;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.3s;
+        
+        /* 添加默认图片容器样式 */
+        .default-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            z-index: 99;
         }
-
-        .platform-item:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .platform-item img {
-            width: 100px;
-            height: 60px;
-            margin-bottom: 15px;
+        
+        .default-image img {
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
         }
 
-        .platform-item p {
-            color: #fff;
-            margin: 0;
-            font-size: 18px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        @media (max-width: 768px) {
-            .platform-list {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 15px;
-                padding: 20px;
-            }
-
-            .platform-item {
-                padding: 20px 15px;
-            }
-
-            .platform-item img {
-                width: 60px;
-                height: 40px;
-            }
-
-            .platform-item p {
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .platform-list {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-                padding: 15px;
-            }
-
-            .platform-item {
-                padding: 15px 10px;
-            }
-
-            .platform-item img {
-                width: 60px;
-                height: 40px;
-                margin-bottom: 12px;
-            }
-
-            .platform-item p {
-                font-size: 14px;
-            }
-        }
-
-        select {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
-            transition: all 0.3s;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .back-btn:hover {
+            background: #ffdd00;
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .control-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+
+        .api-select {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
@@ -200,1144 +101,214 @@
             padding-right: 30px;
         }
 
-        select:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        select:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
-        }
-
-        select option {
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-        }
-
-        @media (max-width: 768px) {
-            select {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-        }
-
-        /* 添加教学说明区域的样式 */
-        .tutorial-box {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .tutorial-title {
-            color: #ffdd00;
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .tutorial-title-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .detail-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .detail-btn:hover {
-            background: #ffdd00;
+        .api-select:hover {
+            background-color: #ffdd00;
             color: #000;
             transform: scale(1.05);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
         }
 
-        .tutorial-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .step-item {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .step-number {
-            background: #ffdd00;
-            color: #000;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .step-content {
-            flex: 1;
-        }
-
-        .step-content h4 {
-            margin-bottom: 5px;
-            color: #ffdd00;
-        }
-
-        .step-content p {
-            font-size: 0.95em;
-            opacity: 0.9;
-        }
-
-        .site-notice {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .notice-icon {
-            font-size: 20px;
-            color: #ffdd00;
-            flex-shrink: 0;
-        }
-
-        .notice-content {
-            flex: 1;
-        }
-
-        .notice-content p {
-            margin: 0;
-            font-size: 0.95em;
-            line-height: 1.5;
-        }
-
-        .notice-content a {
-            color: #ffdd00;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .notice-content a:hover {
-            text-decoration: underline;
-        }
-
-        /* 导航栏样式 */
-        .navbar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
+        .api-select option {
+            background: #333;
             color: #fff;
         }
 
-        .logo img {
-            height: 40px;
-            width: auto;
-        }
-
-        .logo-text {
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
-        .nav-right {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: #fff;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-link:hover {
-            background: #ffdd00;
-            color: #000;
-            transform: scale(1.05);
-        }
-
-        /* 移动端适配 */
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .nav-right {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-
-        /* 页脚样式 */
-        .footer {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .footer-link {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s;
-            font-size: 0.95em;
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
-
-        .footer-link:hover {
-            color: #ffdd00;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-divider {
-            margin: 20px auto;
-            width: 80%;
-            border: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer-bottom {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9em;
-        }
-
-        .footer-links span {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        @media (max-width: 768px) {
-            .footer {
-                padding: 20px;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .footer-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-
-        /* 微信浏览器提示样式 */
-        #weixin-tip {
-            display: none;
+        /* 添加广告位样式 */
+        .ad-banner {
             position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
-            text-align: center;
-            color: #fff;
-        }
-
-        #weixin-tip img {
-            max-width: 100%;
-            height: auto;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-
-        @media (max-width: 768px) {
-            #weixin-tip img {
-                width: 90%;
-            }
-        }
-
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            top: 70px;  /* 位于返回按钮下方 */
+            left: 20px;
             z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #ffdd00;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .loading-text {
-            color: #fff;
-            margin-top: 15px;
-            font-size: 16px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* 修改历史记录相关样式 */
-        .history-btn {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            padding: 10px 15px;
+            max-width: 300px;
             transition: all 0.3s;
+        }
+
+        .ad-banner a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
             display: flex;
             align-items: center;
             gap: 8px;
-            z-index: 99;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .history-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-        }
-
-        .history-btn::before {
-            content: "📋";
-            font-size: 16px;
-        }
-
-        .history-count {
-            background: #ffdd00;
-            color: #000;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        .history-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(8px);
-            z-index: 100;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-
-        .history-box {
-            max-width: 1000px;
-            margin: 40px auto;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 25px;
-            animation: slideIn 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .history-header h3 {
-            color: #ffdd00;
-            margin: 0;
-            font-size: 1.3em;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .history-header h3::before {
-            content: "📋";
-            font-size: 1.2em;
-        }
-
-        .history-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .history-actions button {
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .clear-btn {
-            background: rgba(255, 87, 87, 0.15);
-            color: #ff5757;
-        }
-
-        .clear-btn:hover {
-            background: #ff5757;
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        .clear-btn::before {
-            content: "🗑️";
-            font-size: 1.1em;
-        }
-
-        .close-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
-
-        .close-btn:hover {
+        .ad-banner:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
         }
 
-        .close-btn::before {
-            content: "✖️";
-            font-size: 1.1em;
-        }
-
-        .history-section {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .history-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .history-section h4 {
-            color: #fff;
-            margin: 0 0 15px 0;
-            padding-left: 12px;
-            border-left: 3px solid #ffdd00;
-            font-size: 1.1em;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .history-section h4::after {
-            content: attr(data-count);
-            background: rgba(255, 255, 255, 0.1);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75em;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .history-section .history-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            width: 100%;
-        }
-
-        .history-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            max-width: 100%;
-        }
-
-        .history-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .history-title {
-            color: #fff;
-            margin-bottom: 10px;
-            font-size: 14px;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-            word-break: break-all;
-            min-height: 40px;
-        }
-
-        .history-time {
-            color: rgba(255, 255, 255, 0.5);
+        .ad-label {
+            background: #ffdd00;
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
             font-size: 12px;
+            font-weight: bold;
+        }
+
+        .close-ad {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.3s;
         }
 
-        .history-time::before {
-            content: "🕒";
-            font-size: 1.1em;
-        }
-
-        .history-empty {
-            text-align: center;
-            padding: 40px 20px;
-            color: rgba(255, 255, 255, 0.7);
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-
-        .history-empty::before {
-            content: "📭";
-            display: block;
-            font-size: 40px;
-            margin-bottom: 15px;
+        .close-ad:hover {
+            background: rgba(0, 0, 0, 0.8);
         }
 
         @media (max-width: 768px) {
-            .history-box {
-                margin: 20px auto;
-                padding: 20px;
+            .ad-banner {
+                left: 50%;
+                transform: translateX(-50%);
+                width: calc(100% - 40px);
+                max-width: none;
+                text-align: center;
             }
             
-            .history-list {
-                grid-template-columns: 1fr;
-            }
-            
-            .history-section {
-                padding: 15px;
-            }
-            
-            .history-btn {
-                right: 15px;
-                bottom: 15px;
-                padding: 10px 20px;
-            }
-            
-            .history-actions {
-                gap: 8px;
-            }
-            
-            .history-actions button {
-                padding: 6px 12px;
-            }
-            
-            .history-section .history-list {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            
-            .history-item {
-                padding: 12px;
-            }
-            
-            .history-title {
-                font-size: 13px;
-                min-height: 36px;
-            }
-            
-            .history-time {
-                font-size: 11px;
-            }
-        }
-
-        /* 添加中等屏幕尺寸的适配 */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .history-section .history-list {
-                grid-template-columns: repeat(2, 1fr);
+            .ad-banner:hover {
+                transform: translateX(-50%) translateY(-2px);
             }
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <nav class="navbar">
-            <div class="nav-left">
-                <a href="https://ZZ8-8ZZ.github.io/" class="logo">
-                    <img src="./images/logo.png" alt="Logo">
-                    <span class="logo-text">视频解析</span>
-                </a>
-            </div>
-            <div class="nav-right">
-                <a href="sponsor.html" class="nav-link">赞助</a>
-                <a href="selected.html" class="nav-link">应用中心</a>
-                <a href="declaration.html" class="nav-link">免责声明</a>
-                <a href="https://ZZ8-8ZZ.github.io/" class="nav-link">永久导航页</a>
-                <!-- <a href="https://github.com/ZZ8-8ZZ" target="_blank" class="nav-link">关于我们</a> -->
-            </div>
-        </nav>
-        <div class="search-box">
-            <div class="search-tabs">
-                <div class="search-tab active" onclick="switchTab('url-search')">视频解析</div>
-                <div class="search-tab" onclick="switchTab('line-search')">三方在线</div>
-                <div class="search-tab" onclick="switchTab('name-search')">影片搜索</div>
-            </div>
-            <div class="search-form active" id="url-search">
-                <select id="api-select">
-                    <option value="https://z1.m1907.top/?jx=">默认线路</option>
-                    <option value="https://jx.nnsvip.cn/?url=">线路2</option>
-                    <option value="https://jx.xmflv.com/?url=">线路3</option>
-                    <option value="https://jsap.attakids.com/?url=">线路4</option>
-                    <option value="https://jx.jsonplayer.com/player/?url=">线路5</option>
-                </select>
-                <input type="text" id="url" placeholder="请粘贴视频链接(支持爱奇艺、腾讯视频等主流视频网站)" value="">
-                <button onclick="parseVideo()">解析播放</button>
-            </div>
-            <div class="search-form" id="line-search">
-                <select id="online-select">
-                    <option value="https://www.gyf.lol/index.php/vod/search.html?wd=">流光影院</option>
-                    <option value="https://www.jigys.com/vod/search/">极光影视</option>
-                    <option value="https://www.kanjuv.com/search.php?searchword=">星辰影视</option>
-                    <option value="https://www.bczhuiju.com/vodsearch/?wd=">北川影视</option>
-                    <!-- 北川影视发布页https://www.bcyingshi.ink/fb/ -->
-                    <option value="https://www.kanjuw.net/search.php?searchword=">看剧网</option>
-                </select>
-                <input type="text" id="key" placeholder="请输入影片名称（例：流浪地球）" value="">
-                <button onclick="onlineVideo()">立即搜索</button>
-            </div>
-            <div class="search-form" id="name-search">
-                <input type="text" id="keyword" placeholder="功能开发中..." value="" disabled>
-                <button onclick="searchVideo()">搜索影片</button>
-            </div>
-        </div>
+    <button class="back-btn" onclick="location.href='index.html'">返回丨本站网址：ZZ8-8ZZ.GitHub.Io</button>
 
-        <button id="history-btn" class="history-btn">
-            观看历史
-            <span class="history-count">0</span>
-        </button>
-
-        <div id="history-container" class="history-container">
-            <div class="history-box">
-                <div class="history-header">
-                    <h3>观看历史</h3>
-                    <div class="history-actions">
-                        <button onclick="clearHistory()" class="clear-btn">清空历史</button>
-                        <button onclick="closeHistory()" class="close-btn">关闭</button>
-                    </div>
-                </div>
-                <div id="history-list" class="history-list">
-                    <!-- 历史记录将通过 JavaScript 动态插入 -->
-                </div>
-            </div>
-        </div>
-
-        <div class="tutorial-box">
-            <div class="tutorial-title">
-                <div class="tutorial-title-left">
-                    <i>📖</i> 视频解析使用教程
-                </div>
-                <button class="detail-btn" onclick="window.location.href='tutorial.html'">
-                    <i>📋</i> 查看详情
-                </button>
-            </div>
-            <div class="tutorial-steps">
-                <div class="step-item">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>选择视频平台</h4>
-                        <p>点击下方任意视频平台图标进入对应网站</p>
-                    </div>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>复制视频链接</h4>
-                        <p>找到想要观看的视频，复制浏览器地址栏的网址</p>
-                    </div>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>粘贴并解析</h4>
-                        <p>将复制的链接粘贴到上方输入框，点击"解析播放"即可观看</p>
-                    </div>
-                </div>
-                <div class="step-item">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h4>切换线路</h4>
-                        <p>如果当前线路无法播放，可以尝试切换其他线路</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="site-notice">
-                <div class="notice-icon">⚡</div>
-                <div class="notice-content">
-                    <p>请大家记住收藏本站永久导航页网址：<a href="https://ZZ8-8ZZ.github.io/" target="_blank">ZZ8-8ZZ.GitHub.Io</a>
-                        以防迷路。请勿相信视频中任何广告，否则后果自负。<br>第三方在线播放中，部分站点需要梯子访问，请自行选择。</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="platform-list">
-            <a href="https://www.iqiyi.com/" target="_blank" class="platform-item">
-                <img src="./images/aqylogo.png" alt="爱奇艺">
-                <p>爱奇艺</p>
-            </a>
-            <a href="https://v.qq.com/" target="_blank" class="platform-item">
-                <img src="./images/qqlogo.png" alt="腾讯视频">
-                <p>腾讯视频</p>
-            </a>
-            <a href="https://www.youku.com/" target="_blank" class="platform-item">
-                <img src="./images/youkulogo.png" alt="优酷">
-                <p>优酷视频</p>
-            </a>
-            <a href="https://www.mgtv.com/" target="_blank" class="platform-item">
-                <img src="./images/hunantvlogo.png" alt="芒果TV">
-                <p>芒果TV</p>
-            </a>
-            <a href="https://tv.sohu.com/" target="_blank" class="platform-item">
-                <img src="./images/sohulogo.png" alt="搜狐视频">
-                <p>搜狐视频</p>
-            </a>
-            <a href="https://www.bilibili.com/" target="_blank" class="platform-item">
-                <img src="./images/bililogo.png" alt="哔哩哔哩">
-                <p>哔哩哔哩</p>
-            </a>
-        </div>
-
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-links">
-                    <a href="sponsor.html" class="footer-link">赞助</a>
-                    <span>•</span>
-                    <a href="tutorial.html" class="footer-link">使用教程</a>
-                    <span>•</span>
-                    <a href="declaration.html" class="footer-link">免责声明</a>
-                    <!-- <span>•</span> -->
-                    <!-- <a href="https://github.com/ZZ8-8ZZ" target="_blank" class="footer-link">关于我们</a> -->
-                    <span>•</span>
-                    <a href="selected.html" class="footer-link">应用中心</a>
-                    <span>•</span>
-                    <a href="https://ZZ8-8ZZ.github.io/" class="footer-link">永久导航页</a>
-                </div>
-            </div>
-            <hr class="footer-divider">
-            <div class="footer-bottom">
-                <p>© 2024 视频解析. All rights reserved.</p>
-            </div>
-        </footer>
+    <!-- 添加广告位 -->
+    <div class="ad-banner" id="ad-banner">
+        <button class="close-ad" onclick="closeAd()">×</button>
+        <a href="sponsor.html" target="_blank"><img src="images/ggw.webp" alt="" style="width: 100%;height: 100%;"></a>
     </div>
-
-    <!-- 微信浏览器提示 -->
-    <div id="weixin-tip">
-        <img src="images/202408151358934.jpg" alt="在浏览器中打开">
+        
+    <!-- 添加默认图片容器 -->
+    <div class="default-image" id="default-image">
+        <img src="images/1b8a4bf8852435e837d122e6ab551429.webp" alt="默认图片">
     </div>
-
-    <div class="loading-overlay" id="loading-overlay">
-        <div style="text-align: center;">
-            <div class="loading-spinner"></div>
-            <div class="loading-text">加载中...</div>
-        </div>
+    
+    <div class="video-container" id="video-container">
+        <!-- 视频将通过JavaScript加载 -->
+        <iframe id="jiekou" src="" allowfullscreen="true"></iframe>
     </div>
-
+    
+    <div class="control-panel">
+        <select class="api-select" id="api-select" onchange="changeApi()">
+            <option value="https://z1.m1907.top/?jx=">默认线路</option>
+            <option value="https://jx.nnsvip.cn/?url=">线路2</option>
+            <option value="https://jx.xmflv.com/?url=">线路3</option>
+            <option value="https://jsap.attakids.com/?url=">线路4</option>
+            <option value="https://jx.jsonplayer.com/player/?url=">线路5</option>
+        </select>
+    </div>
+    
     <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.search-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.search-form').forEach(form => {
-                form.classList.remove('active');
-            });
-
-            event.target.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        function searchVideo() {
-            alert("影片搜索功能开发中...可使用第三方在线播放功能代替");
-            return;
-
-            // 注释掉原有代码
-            /*
-            var keyword = document.getElementById("keyword").value;
-            if(!keyword) {
-                alert("请输入影片名称!");
-                return;
+    let originalUrl = '';
+    
+    // 合并两个onload函数
+    window.onload = function() {
+        // 获取URL参数中的视频地址
+        var url = new URLSearchParams(window.location.search).get('url');
+        if(url) {
+            // 隐藏默认图片
+            setTimeout(function() {
+                document.getElementById('default-image').style.display = 'none';
+            }, 1500); // 延迟1.5秒后隐藏默认图片
+            
+            url = decodeURIComponent(url);
+            // 提取原始视频URL并保存
+            originalUrl = extractOriginalUrl(url);
+            if(!originalUrl) {
+                originalUrl = url; // 如果无法提取，则使用完整URL
             }
+            document.getElementById('jiekou').src = url;
             
-            location.href = 'search.html?keyword=' + encodeURIComponent(keyword);
-            */
-        }
-
-        function showLoading() {
-            document.getElementById('loading-overlay').style.display = 'flex';
-        }
-
-        function hideLoading() {
-            document.getElementById('loading-overlay').style.display = 'none';
-        }
-
-        function parseVideo() {
-            var url = document.getElementById("url").value.trim();
-            
-            // 验证是否为空
-            if (!url) {
-                alert("请输入视频链接!");
-                return;
-            }
-            
-            // 验证是否是合法的 URL 格式
-            try {
-                // 如果没有协议头,添加 http://
-                if (url.indexOf("://") == -1) {
-                    url = "http://" + url;
+            // 设置当前选中的接口
+            const apiSelect = document.getElementById('api-select');
+            for(let i = 0; i < apiSelect.options.length; i++) {
+                if(url.startsWith(apiSelect.options[i].value)) {
+                    apiSelect.selectedIndex = i;
+                    break;
                 }
-                
-                // 尝试创建 URL 对象来验证
-                new URL(url);
-                
-                // 验证是否包含主要视频网站域名
-                const validDomains = [
-                    "iqiyi.com",
-                    "v.qq.com",
-                    "youku.com", 
-                    "mgtv.com",
-                    "tv.sohu.com",
-                    "bilibili.com",
-                    "le.com"
-                ];
-                
-                const urlDomain = new URL(url).hostname;
-                const isValidDomain = validDomains.some(domain => urlDomain.includes(domain));
-                
-                if (!isValidDomain) {
-                    alert("请输入正确的视频网站链接!\n支持爱奇艺、腾讯视频、优酷、芒果TV等主流视频网站");
-                    return;
-                }
-                
-                // 添加到历史记录
-                addToHistory(url);
-                
-                var api = document.getElementById("api-select").value;
-                var playUrl = api + encodeURIComponent(url);
-                
-                location.href = 'index.html?url=' + encodeURIComponent(playUrl);
-                
-            } catch (e) {
-                alert("请输入有效的视频链接!");
-                return;
+            }
+        } else {
+            // location.href = 'index.html';
+        }
+
+        // 控制广告显示时间
+        setTimeout(() => {
+            const adBanner = document.getElementById('ad-banner');
+            if(adBanner) {
+                adBanner.style.display = 'none';
+            }
+        }, 300000); // 5分钟后自动隐藏
+        
+        // 检查是否同意免责声明
+        const hasAgreed = localStorage.getItem('disclaimerAgreed');
+        if (!hasAgreed) {
+            window.location.href = 'index.html'; // 如果未同意，跳转到首页
+        }
+    }
+    
+    function extractOriginalUrl(url) {
+        // 尝试从各种可能的URL格式中提取原始视频URL
+        const patterns = [
+            /[?&]url=([^&]+)/,  // 标准格式
+            /\?jx=([^&]+)/,     // 部分接口特殊格式
+            /\?v=([^&]+)/       // 其他可能的格式
+        ];
+        
+        for(let pattern of patterns) {
+            const match = url.match(pattern);
+            if(match && match[1]) {
+                return decodeURIComponent(match[1]);
             }
         }
-
-        function onlineVideo() {
-            var key = document.getElementById("key").value;
-            if (!key) {
-                alert("请输入影片名称!");
-                return;
-            }
-
-            // 添加到搜索历史
-            addToSearchHistory(key);
-
-            var online = document.getElementById("online-select").value;
-            var playUrl = online + encodeURIComponent(key);
-
-            showLoading(); // 显示加载动画
-            setTimeout(() => {
-                window.open(playUrl, '_blank');
-                hideLoading(); // 隐藏加载动画
-            }, 500);
+        
+        // 如果都无法匹配，返回原始URL
+        return url;
+    }
+    
+    function changeApi() {
+        if(!originalUrl) return;
+        
+        // 显示默认图片
+        document.getElementById('default-image').style.display = 'flex';
+        
+        const api = document.getElementById('api-select').value;
+        // 确保原始URL不包含解析接口前缀
+        let videoUrl = originalUrl;
+        if(videoUrl.includes('?url=')) {
+            videoUrl = extractOriginalUrl(videoUrl);
         }
-
-        // 添加搜索历史相关函数
-        function addToSearchHistory(keyword) {
-            let searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-            const timestamp = new Date().toLocaleString();
-            
-            // 检查是否已存在相同的关键词
-            const existingIndex = searchHistory.findIndex(item => item.keyword.toLowerCase() === keyword.toLowerCase());
-            
-            if (existingIndex !== -1) {
-                // 如果存在，则更新时间并移到顶部
-                searchHistory.splice(existingIndex, 1);
-            }
-            
-            // 添加新记录到开头
-            searchHistory.unshift({
-                keyword: keyword,
-                time: timestamp
-            });
-            
-            // 最多保存5条记录
-            searchHistory = searchHistory.slice(0, 3);
-            
-            localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-            displayHistory();
-        }
-
-        // 修改 displayHistory 函数来显示两种历史记录
-        function displayHistory() {
-            const historyList = document.getElementById('history-list');
-            const videoHistory = JSON.parse(localStorage.getItem('videoHistory') || '[]');
-            const searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-            
-            let historyHTML = '';
-            
-            // 添加视频解析历史
-            if (videoHistory.length > 0) {
-                historyHTML += `
-                    <div class="history-section">
-                        <h4 data-count="${videoHistory.length}">视频解析历史</h4>
-                        <div class="history-list">
-                            ${videoHistory.map(item => `
-                                <div class="history-item" onclick="replayVideo('${item.url}')">
-                                    <div class="history-title">${item.title}</div>
-                                    <div class="history-time">${item.time}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>`;
-            }
-            
-            // 添加搜索历史
-            if (searchHistory.length > 0) {
-                historyHTML += `
-                    <div class="history-section">
-                        <h4 data-count="${searchHistory.length}">搜索历史</h4>
-                        <div class="history-list">
-                            ${searchHistory.map(item => `
-                                <div class="history-item" onclick="replaySearch('${item.keyword}')">
-                                    <div class="history-title">${item.keyword}</div>
-                                    <div class="history-time">${item.time}</div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>`;
-            }
-            
-            historyList.innerHTML = historyHTML || `
-                <div class="history-empty">
-                    暂无历史记录
-                </div>
-            `;
-            
-            // 更新历史记录数量
-            updateHistoryCount();
-        }
-
-        // 添加重新搜索功能
-        function replaySearch(keyword) {
-            document.getElementById('key').value = keyword;
-            // 切换到搜索标签
-            switchTab('line-search');
-            onlineVideo();
-        }
-
-        // 修改 clearHistory 函数来清空所有历史
-        function clearHistory() {
-            if(confirm('确定要清空所有历史记录吗？')) {
-                localStorage.removeItem('videoHistory');
-                localStorage.removeItem('searchHistory');
-                displayHistory();
-                closeHistory();
-            }
-        }
-
-        // 检测微信内置浏览器
-        function isWeixinBrowser() {
-            var ua = window.navigator.userAgent.toLowerCase();
-            return ua.includes('micromessenger');
-        }
-
-        // 页面加载完成后检测
-        window.onload = function() {
-            if (isWeixinBrowser()) {
-                document.getElementById('weixin-tip').style.display = 'block';
-                // 阻止页面滚动
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        // 点击提示图片时关闭提示
-        document.getElementById('weixin-tip').onclick = function() {
-            this.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // 添加新的历史记录相关函数
-        function addToHistory(url) {
-            let history = JSON.parse(localStorage.getItem('videoHistory') || '[]');
-            const timestamp = new Date().toLocaleString();
-            
-            // 检查是否已存在相同的 URL
-            const existingIndex = history.findIndex(item => item.url === url);
-            
-            if (existingIndex !== -1) {
-                // 如果存在，则更新时间并移到顶部
-                history.splice(existingIndex, 1);
-            }
-            
-            // 添加新记录到开头
-            history.unshift({
-                url: url,
-                title: url.substring(0, 50) + '...',
-                time: timestamp
-            });
-            
-            // 最多保存5条记录
-            history = history.slice(0, 3);
-            
-            localStorage.setItem('videoHistory', JSON.stringify(history));
-            displayHistory();
-        }
-
-        function replayVideo(url) {
-            document.getElementById('url').value = url;
-            parseVideo();
-        }
-
-        // 页面加载时显示历史记录
-        window.addEventListener('load', function() {
-            displayHistory();
-        });
-
-        // 添加历史记录相关函数
-        function updateHistoryCount() {
-            const videoHistory = JSON.parse(localStorage.getItem('videoHistory') || '[]');
-            const searchHistory = JSON.parse(localStorage.getItem('searchHistory') || '[]');
-            const totalCount = videoHistory.length + searchHistory.length;
-            
-            const countElement = document.querySelector('.history-count');
-            countElement.textContent = totalCount;
-            
-            // 如果没有历史记录，隐藏按钮
-            document.getElementById('history-btn').style.display = totalCount > 0 ? 'flex' : 'none';
-        }
-
-        function showHistory() {
-            document.getElementById('history-container').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeHistory() {
-            document.getElementById('history-container').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // 添加事件监听
-        document.getElementById('history-btn').addEventListener('click', showHistory);
-
-        // 点击空白处关闭历史记录
-        document.getElementById('history-container').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeHistory();
-            }
-        });
-
-        // 页面加载时更新历史记录数量
-        window.addEventListener('load', function() {
-            updateHistoryCount();
-        });
+        
+        const newUrl = api + encodeURIComponent(videoUrl);
+        document.getElementById('jiekou').src = newUrl;
+        
+        // 短暂延迟后隐藏默认图片
+        setTimeout(function() {
+            document.getElementById('default-image').style.display = 'none';
+        }, 1500); // 延迟1.5秒后隐藏默认图片
+    }
+    
+    // 添加关闭广告的功能
+    function closeAd() {
+        document.getElementById('ad-banner').style.display = 'none';
+    }
     </script>
 </body>
-
 </html>
