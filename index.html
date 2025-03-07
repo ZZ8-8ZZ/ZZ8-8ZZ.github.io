@@ -415,71 +415,177 @@
         }
 
         /* 页脚样式 */
-        .footer {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 30px;
-            text-align: center;
+        /* 社交链接样式优化 */
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
         }
 
-        .footer-content {
+        .social-link {
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .footer-link {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: all 0.3s;
-            font-size: 0.95em;
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
-
-        .footer-link:hover {
-            color: #ffdd00;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .footer-divider {
-            margin: 20px auto;
-            width: 80%;
-            border: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ffdd00, #ff7700);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
         }
 
-        .footer-bottom {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9em;
+        .social-link svg {
+            position: relative;
+            z-index: 1;
         }
 
-        .footer-links span {
-            color: rgba(255, 255, 255, 0.3);
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+
+        .social-link:hover::before {
+            opacity: 1;
         }
 
         @media (max-width: 768px) {
-            .footer {
+            .social-links {
+                justify-content: flex-start;
+                margin-top: 15px;
+            }
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #fff;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .footer-container {
+            width: 100%;
+            padding: 25px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .footer-logo span {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffdd00;
+        }
+
+        .footer-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-nav-group h4 {
+            color: #ffdd00;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .footer-nav-group ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-nav-group ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-nav-group ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+
+        .footer-nav-group ul li a:hover {
+            color: #ffdd00;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
                 padding: 20px;
             }
 
-            .footer-content {
+            .footer-top {
                 flex-direction: column;
                 gap: 20px;
             }
 
-            .footer-links {
-                flex-wrap: wrap;
-                justify-content: center;
+            .footer-nav {
+                gap: 25px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-nav {
+                flex-direction: column;
+                gap: 20px;
             }
         }
 
@@ -556,7 +662,7 @@
         .history-btn {
             position: fixed;
             right: 20px;
-            bottom: 20px;
+            bottom: 70px;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             color: #fff;
@@ -957,6 +1063,44 @@
                 max-height: 40vh;
             }
         }
+
+        /* 备案信息样式 */
+        .beian-info {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .beian-info a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .beian-info a:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .beian-info img {
+            height: 14px;
+            margin-right: 5px;
+        }
+
+        .beian-info .divider {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .beian-info {
+                justify-content: center;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
@@ -1144,25 +1288,84 @@
             </a>
         </div>
 
+        <!--Footer-->
         <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-links">
-                    <a href="sponsor.html" class="footer-link">赞助</a>
-                    <span>•</span>
-                    <a href="tutorial.html" class="footer-link">使用教程</a>
-                    <span>•</span>
-                    <a href="declaration.html" class="footer-link">免责声明</a>
-                    <!-- <span>•</span> -->
-                    <!-- <a href="https://github.com/ZZ8-8ZZ" target="_blank" class="footer-link">关于我们</a> -->
-                    <span>•</span>
-                    <a href="selected.html" class="footer-link">应用中心</a>
-                    <span>•</span>
-                    <a href="https://ZZ8-8ZZ.github.io/" class="footer-link">永久导航页</a>
+            <div class="footer-container">
+                <div class="footer-top">
+                    <div>
+                        <div class="footer-logo">
+                            <img src="./images/logo.png" alt="Logo">
+                            <span>视频解析</span>
+                        </div>
+                        <p
+                            style="color: rgba(255,255,255,0.6); max-width: 300px; margin-top: 15px; font-size: 0.9em; line-height: 1.6;">
+                            免费在线视频解析工具，支持爱奇艺、腾讯视频、优酷、芒果TV等多平台VIP视频免费在线观看
+                        </p>
+                        <div class="social-links">
+                            <a href="#" title="微信" class="social-link" aria-label="微信">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                    <path
+                                        d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.045c.133 0 .24-.11.24-.246 0-.06-.024-.12-.04-.177l-.325-1.233a.492.492 0 0 1 .177-.554c1.526-1.115 2.501-2.777 2.501-4.626 0-3.376-3.087-6.116-7.06-6.116zm-2.51 3.348c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z" />
+                                </svg>
+                            </a>
+                            <a href="#" title="QQ" class="social-link" aria-label="QQ">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                    <path
+                                        d="M12.003 2c-2.265 0-6.29 1.364-6.29 7.325v1.195S3.55 14.96 3.55 17.474c0 .665.17 1.025.281 1.025.114 0 .902-.484 1.748-2.072 0 0-.18 2.197 1.904 3.967 0 0-1.77.495-1.77 1.182 0 .686 4.078.43 6.29 0 2.239.425 6.287.687 6.287 0 0-.688-1.768-1.182-1.768-1.182 2.085-1.77 1.905-3.967 1.905-3.967.845 1.588 1.634 2.072 1.746 2.072.111 0 .283-.36.283-1.025 0-2.514-2.166-6.954-2.166-6.954V9.325C18.29 3.364 14.268 2 12.003 2z" />
+                                </svg>
+                            </a>
+                            <a href="mailto:ZACH@mail.070701.xyz" title="邮箱" class="social-link" aria-label="邮箱">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                    <path
+                                        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="footer-nav">
+                        <div class="footer-nav-group">
+                            <h4>快速导航</h4>
+                            <ul>
+                                <li><a href="index.html">首页</a></li>
+                                <li><a href="selected.html">应用中心</a></li>
+                                <li><a href="sponsor.html">赞助支持</a></li>
+                                <li><a href="declaration.html">免责声明</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-nav-group">
+                            <h4>视频平台</h4>
+                            <ul>
+                                <li><a href="https://www.iqiyi.com/" target="_blank">爱奇艺</a></li>
+                                <li><a href="https://v.qq.com/" target="_blank">腾讯视频</a></li>
+                                <li><a href="https://www.youku.com/" target="_blank">优酷</a></li>
+                                <li><a href="https://www.mgtv.com/" target="_blank">芒果TV</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-nav-group">
+                            <h4>帮助中心</h4>
+                            <ul>
+                                <li><a href="tutorial.html">使用教程</a></li>
+                                <li><a href="javascript:void(0)" onclick="showHistory()">历史记录</a></li>
+                                <li><a href="https://ZZ8-8ZZ.github.io/">永久导航</a></li>
+                                <li><a href="mailto:ZACH@mail.070701.xyz">联系我们</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <hr class="footer-divider">
-            <div class="footer-bottom">
-                <p>© 2025 视频解析 All rights reserved.</p>
+                <div class="footer-divider"></div>
+                <div class="footer-bottom">
+                    <div class="copyright">
+                        © 2024 ZACH视频解析. All rights reserved.
+                    </div>
+                    <div class="beian-info">
+                        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">ICP</a>
+                        <span class="divider">|</span>
+                        <a href="https://beian.mps.gov.cn/#/query/webSearch" target="_blank" rel="noopener">
+                            <!-- <img src="https://beian.mps.gov.cn/img/logo01.dd7ff50e.png" alt="公安备案图标" /> -->
+                            备案信息样式
+                        </a>
+                    </div>
+                </div>
             </div>
         </footer>
     </div>
