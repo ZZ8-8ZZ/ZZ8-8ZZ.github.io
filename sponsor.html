@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh_CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -153,6 +154,109 @@
             opacity: 0.9;
         }
 
+        /* 广告联系提示样式 */
+        .ad-contact {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            border-left: 6px solid #ffdd00;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ad-contact::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 221, 0, 0.1), transparent);
+            z-index: 0;
+        }
+
+        .ad-contact-icon {
+            font-size: 3em;
+            color: #ffdd00;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .ad-contact-content {
+            flex-grow: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ad-contact h3 {
+            color: #ffdd00;
+            margin-bottom: 12px;
+            font-size: 1.5em;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .ad-contact p {
+            font-size: 1em;
+            opacity: 1;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .email-highlight {
+            display: block;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            background: rgba(255, 221, 0, 0.2);
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            text-align: center;
+            border: 1px dashed rgba(255, 221, 0, 0.5);
+        }
+
+        .ad-contact-btn {
+            display: inline-block;
+            background: rgba(255, 221, 0, 0.8);
+            color: #000;
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .ad-contact-btn:hover {
+            background: #ffdd00;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
         @media (max-width: 768px) {
             .sponsor-header h1 {
                 font-size: 2em;
@@ -162,9 +266,36 @@
                 width: 180px;
                 height: 180px;
             }
+
+            .ad-contact {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .ad-contact-icon {
+                margin-bottom: 10px;
+                font-size: 2.5em;
+            }
+
+            .ad-contact h3 {
+                font-size: 1.4em;
+            }
+
+            .email-highlight {
+                font-size: 1.1em;
+                padding: 10px;
+                margin: 12px 0;
+            }
+
+            .ad-contact-btn {
+                width: 100%;
+                padding: 12px 0;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <nav class="navbar">
@@ -194,13 +325,44 @@
                     <h3>支付宝</h3>
                     <p>使用支付宝扫一扫</p>
                 </div>
+                <!-- paypal -->
+                <!-- <div class="sponsor-method">
+                    <img src="https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_fc_hl.svg" alt="PayPal">
+                    <h3>PayPal</h3>
+                    <p>点击下方按钮进行支付</p>
+                    <a href="https://www.paypal.com/donate/?hosted_button_id=YOUR_BUTTON_ID" target="_blank" class="ad-contact-btn">立即赞助</a>
+                </div> -->
+                <div class="sponsor-method">
+                    <div class="ad-contact-content">
+                        <h3>商务合作</h3>
+                        <p>我们提供网站广告位投放服务，如果您有广告投放需求，欢迎与我们联系。我们的网站拥有稳定的流量和精准的用户群体，是您推广产品和服务的理想平台。</p>
+                        <div class="email-highlight">
+                            <strong>1@mail.070701.xyz</strong>
+                        </div>
+                        <a href="mailto:1@mail.070701.xyz" class="ad-contact-btn">联系我们</a>
+                    </div>
+                </div>
             </div>
 
             <div class="sponsor-note">
                 <p>感谢您的支持！我们会继续努力提供更好的服务。</p>
                 <p>赞助金额随意，量力而行。</p>
             </div>
+
+            <!-- 广告联系提示 -->
+            <!-- <div class="ad-contact">
+                <div class="ad-contact-icon">📢</div>
+                <div class="ad-contact-content">
+                    <h3>广告合作</h3>
+                    <p>我们提供网站广告位投放服务，如果您有广告投放需求，欢迎与我们联系。我们的网站拥有稳定的流量和精准的用户群体，是您推广产品和服务的理想平台。</p>
+                    <div class="email-highlight">
+                        📧 邮箱地址：<strong>1@mail.070701.xyz</strong>
+                    </div>
+                    <a href="mailto:1@mail.070701.xyz" class="ad-contact-btn">联系我们</a>
+                </div>
+            </div> -->
         </div>
     </div>
 </body>
+
 </html>
